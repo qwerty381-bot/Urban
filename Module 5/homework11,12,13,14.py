@@ -76,5 +76,3 @@ print(h1 == h2)
 h1 = h1 + 10
 print(h1)
 print(h1 == h2)
-
-print('hasbula vs abdurozik!!!')
