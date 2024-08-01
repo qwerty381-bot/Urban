@@ -4,42 +4,45 @@ class House:
         self.number_of_floors = number_of_floors
 
     def __eq__(self, other):
-        if self.number_of_floors == other.number_of_floors:
+        if self.number_of_floors == other:
             return True
         else:
             return False
 
     def __ne__(self, other):
-        if self.number_of_floors != other.number_of_floors:
+        if self.number_of_floors != other:
             return True
         else:
             return False
 
     def __lt__(self, other):
-        if self.number_of_floors < other.number_of_floors:
+        if self.number_of_floors < other:
             return True
         else:
             return False
 
     def __le__(self, other):
-        if self.number_of_floors <= other.number_of_floors:
+        if self.number_of_floors <= other:
             return True
         else:
             return False
 
     def __gt__(self, other):
-        if self.number_of_floors > other.number_of_floors:
+        if self.number_of_floors > other:
             return True
         else:
             return False
 
     def __ge__(self, other):
-        if self.number_of_floors >= other.number_of_floors:
+        if self.number_of_floors >= other:
             return True
         else:
             return False
 
     def __add__(self, value):
+        return self.name, self.number_of_floors + value
+
+    def __iadd__(self, value):
         return self.name, self.number_of_floors + value
 
 
@@ -71,8 +74,11 @@ print(h2)
 print(len(h1))
 print(len(h2))
 
-print(h1 == h2)
+print(h1 == h2) # __eq__
 
-h1 = h1 + 10
+h1 = h1 + 10 # __add__
 print(h1)
 print(h1 == h2)
+
+h1 += 10 # __iadd__
+print(h1)
