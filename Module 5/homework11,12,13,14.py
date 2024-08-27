@@ -11,6 +11,9 @@ class House:
         self.name = name
         self.number_of_floors = number_of_floors
 
+    def __del__(self):
+        print(f'{self.name} снесён, но останется в истории')
+
     def __eq__(self, other):
         if self.number_of_floors == other:
             return True
@@ -101,3 +104,4 @@ h2 = House('ЖК Акация', 20)
 print(House.houses_history)
 h3 = House('ЖК Матрёшки', 20)
 print(House.houses_history)
+
