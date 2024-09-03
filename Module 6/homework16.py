@@ -1,11 +1,11 @@
 class Vehicle():
     __COLOR_VARIANTS = ['w', 'black', 'r']
 
-    def __init__(self, owner, __model, __engine_power, __color):
+    def __init__(self, owner, __model, __color, __engine_power):
         self.owner = owner
         self.__model = __model
-        self.__engine_power = __engine_power
         self.__color = __color
+        self.__engine_power = __engine_power
 
     def get_model(self):
         return f'Модель: {self.__model}'
@@ -29,8 +29,8 @@ class Vehicle():
 
 class Sedan(Vehicle):
 
-    def __init__(self, owner, __model, __engine_power, __color):
-        super().__init__(owner, __model, __engine_power, __color)
+    def __init__(self, owner, __model, __color, __engine_power):
+        super().__init__(owner, __model, __color, __engine_power)
 
     __PASSENGERS_LIMIT = 5
 
