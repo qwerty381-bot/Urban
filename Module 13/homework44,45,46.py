@@ -4,7 +4,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
 import asyncio
 
-api = ''
+api = '7903980320:AAE6Q0MsfwZc72yhAEMyC4o3YEYs9uFk-V8'
 bot = Bot(token = api)
 dp = Dispatcher(bot, storage= MemoryStorage())
 
@@ -44,10 +44,11 @@ async def set_weight(message, state):
 @dp.message_handler(state=UserState.weight)
 async def send_calories(message, state):
     await state.update_data(weight=message.text)
-    data_age = await state.get_data('age')
-    data_growth = await state.get_data('growth')
-    data_weight = await state.get_data('weight')
-    calories = 10 * data_weight.weight + 6.25 * data_growth.growth - 5 * data_age.age + 5
+    data = await state.get_data()
+    age = int(data['age'])
+    growth = int(data['growth'])
+    weight = int(data['weight'])
+    calories = 10 * weight + 6.25 * growth - 5 * age + 5
     await message.answer(f'Ваша норма калорий: {calories}')
     await state.finish()
 
