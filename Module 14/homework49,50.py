@@ -33,5 +33,14 @@ cursor.execute('SELECT username, email, age, balance FROM Users WHERE age != 60'
 results = cursor.fetchall()
 for row in results:
     print(f'Имя: {row[0]} | Почта: {row[1]} | Возраст: {row[2]} | Баланс: {row[3]}')
+cursor.execute('DELETE FROM Users WHERE id = ?', (6,))
+cursor.execute('SELECT COUNT(*) FROM Users')
+total_users = cursor.fetchone()[0]
+print(total_users)
+cursor.execute('SELECT sum(balance) FROM Users')
+all_balances = cursor.fetchone()[0]
+print(all_balances)
+print(all_balances/total_users)
 connection.commit()
 connection.close()
+
