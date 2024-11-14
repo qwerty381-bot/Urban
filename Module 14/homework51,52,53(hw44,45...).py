@@ -6,7 +6,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.dispatcher import FSMContext
 import asyncio
 
-api = ''
+api = '7903980320:AAE6Q0MsfwZc72yhAEMyC4o3YEYs9uFk-V8'
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
@@ -49,7 +49,7 @@ async def start(message: types.Message):
 async def get_buying_list(message: types.Message):
     for i in range(1, 5):
         await message.answer(text=f'Название: Product<{i}>| Описание:<{i}>| Цена: <{i*100}>', reply_markup=keyboard3)
-        with open(f'Module13/images/{i}.png', 'rb') as img:
+        with open(f'Module14/images/{i}.png', 'rb') as img:
             await message.answer_photo(img)
         await message.answer(text='Выберите продукт для покупки: ', reply_markup=keyboard3)
 
