@@ -5,6 +5,9 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.dispatcher import FSMContext
 import asyncio
+from crud_functions import get_all_products
+
+get_all_products()
 
 api = ''
 bot = Bot(token=api)
@@ -47,11 +50,13 @@ async def start(message: types.Message):
 
 @dp.message_handler(text=['Купить'])
 async def get_buying_list(message: types.Message):
-    for i in range(1, 5):
-        await message.answer(text=f'Название: Product<{i}>| Описание:<{i}>| Цена: <{i*100}>', reply_markup=keyboard3)
-        with open(f'Module14/images/{i}.png', 'rb') as img:
+    products = get_all_products()
+    for product in products:
+        id, title, description, price=product
+        await message.answer(text=f'Название: Product<{title}>| Описание:<{description}>| Цена: <{price}>', reply_markup=keyboard3)
+        with open(f'Module14/images/{id}.png', 'rb') as img:
             await message.answer_photo(img)
-        await message.answer(text='Выберите продукт для покупки: ', reply_markup=keyboard3)
+    await message.answer(text='Выберите продукт для покупки: ', reply_markup=keyboard3)
 
 @dp.callback_query_handler(text='product_buying')
 async def send_confirm_message(call: types.CallbackQuery):
