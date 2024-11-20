@@ -5,14 +5,37 @@ def initiate_db(db_name='products.db'):
     cursor = connection.cursor()
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Products(
-    id INT,
+    id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT,
     price INT NOT NULL
     );
     ''')
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Users(
+    id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
+    age INT NOT NULL,
+    balance INT NOY NULL
+    );
+    ''')
     connection.commit()
     connection.close()
+
+def add_user(username, email, age):
+    connection = sqlite3.connect('Users')
+    cursor = connection.cursor()
+    cursor.execute('INSERT INTO Users (username, email, age, balance) VALUES (?, ?, ?, ?)', (username, email, age, 1000))
+    connection.close()
+
+def is_included(username):
+    connection = sqlite3.connect('Users')
+    cursor = connection.cursor()
+    cursor.execute('SELECT COUNT(*) FROM Users WHERE username = ?', (username))
+    user_count = cursor.fetchone()[0]
+    connection.close()
+    return user_count > 0
 
 def get_all_products(db_name='products.db'):
     connection = sqlite3.connect(db_name)

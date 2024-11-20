@@ -5,7 +5,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.dispatcher import FSMContext
 import asyncio
-from crud_functions import get_all_products
+from crud_functions import *
 
 get_all_products()
 
@@ -13,6 +13,41 @@ api = ''
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
+class RegistrationState(StatesGroup):
+    username = State()
+    email = State()
+    age = State()
+    balance = State()
+    def __init__(self):
+        super().__init__()
+        self.balance = 1000
+
+@dp.message_handler(text=['Регистрация'])
+async def sign_up(message):
+    await message.answer('Введите имя пользователя (только латинский алфавит):')
+    await RegistrationState.username.set()
+
+@dp.message_handler(state=RegistrationState.username)
+async def set_username(message, state):
+    username1 = message.text
+    if is_included(username1) > 0:
+        await message.answer('Пользователь существует, введите другое имя:')
+    else:
+        await state.update_data(username=username1)
+        await message.answer('Введите свой email:')
+        await RegistrationState.email.set()
+
+@dp.message_handler(state=RegistrationState.email)
+async def set_email(message, state):
+    await state.update_data(email=message.text)
+    await message.answer('Введите свой возраст:')
+    await RegistrationState.age.set()
+
+@dp.message_handler(state=RegistrationState.age)
+async def set_age(message, state):
+    await state.update_data(age=message.text)
+    await add_user(RegistrationState.username, RegistrationState.email, RegistrationState.age)
+    await state.finish()
 
 class UserState(StatesGroup):
     age = State()
@@ -24,9 +59,11 @@ keyboard1 = ReplyKeyboardMarkup(resize_keyboard=True)
 button1 = KeyboardButton(text='Рассчитать')
 button2 = KeyboardButton(text='Информация')
 button3 = KeyboardButton(text='Купить')
+button4 = KeyboardButton(text='Регистрация')
 keyboard1.add(button1)
 keyboard1.add(button2)
 keyboard1.add(button3)
+keyboard1.add(button4)
 
 keyboard2 = InlineKeyboardMarkup(
     inline_keyboard=[
@@ -109,7 +146,6 @@ async def send_calories(message: types.Message, state: FSMContext):
     weight = data['weight']
     calories = 10 * weight + 6.25 * growth - 5 * age + 5
     await message.answer(f'Ваша норма калорий: {calories}')
-
     await state.finish()
 
 @dp.message_handler()
