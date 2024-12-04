@@ -23,7 +23,12 @@ async def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
 
 @router.post('/create')
 async def create_user(db: Annotated[Session, Depends(get_db)], create_user: CreateUser):
-    db.execute(insert(User).values(username=create_user.name, firstname=create_user.firstname, lastname=create_user.lastname, age=create_user.age))
+    db.execute(insert(User).values(
+        username=create_user.name,
+        firstname=create_user.firstname,
+        lastname=create_user.lastname,
+        age=create_user.age,
+        slug=slugify(create_user.firstname)))
     db.commit()
     return {
         'status_code': status.HTTP_201_CREATED,
@@ -38,7 +43,8 @@ async def update_user(db: Annotated[Session, Depends(get_db)], user_id: int, upd
     db.execute(update(User).where(User.id == user_id).values(
             firstname=update_user.firstname,
             lastname=update_user.lastname,
-            age=update_user.age))
+            age=update_user.age,
+            slug=slugify(update_user.firstname)))
     return {
         'status_code': status.HTTP_200_OK,
         'transaction': 'User Update is successful!'
